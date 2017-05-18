@@ -9,12 +9,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AC2A2A73-B567-4DA8-A5F7-950A63D5F5E3}</ProjectGuid>
+    <ProjectGuid>{4022141D-D2F7-4C55-BC49-E33CC5966D2E}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EntityFrameworkMSSQL</RootNamespace>
-    <AssemblyName>EntityFrameworkMSSQL</AssemblyName>
+    <RootNamespace>EntityFrameworkMySQL</RootNamespace>
+    <AssemblyName>EntityFrameworkMySQL</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -135,9 +135,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2956</DevelopmentServerPort>
+          <DevelopmentServerPort>3304</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2956/</IISUrl>
+          <IISUrl>http://localhost:3304/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
