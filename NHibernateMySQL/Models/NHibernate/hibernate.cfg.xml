@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration xmlns = "urn:nhibernate-configuration-2.2">
+  <session-factory>
+
+    <property name="connection.connection_string">
+      Server=localhost;Database=chinook;User ID=root
+    </property>
+
+    <property name = "connection.driver_class">
+      NHibernate.Driver.MySqlDataDriver
+    </property>
+
+    <property name = "dialect">
+      NHibernate.Dialect.MySQL5Dialect
+    </property>
+
+    <mapping assembly = "NHibernateMySQL"/>
+
+  </session-factory>
+
+</hibernate-configuration> 

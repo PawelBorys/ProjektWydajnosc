@@ -13,6 +13,6 @@ namespace NHibernateMySQL.Models
 		public virtual string BillingCountry { get; set; }
 		public virtual string BillingPostalCode { get; set; }
 		public virtual int Total { get; set; }
-		public virtual IList<InvoiceLine> InvoiceLines { get; set; }
+		public virtual ISet<InvoiceLine> InvoiceLines { get; set; }
 	}
 }

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="NHibernateMySQL" namespace="NHibernateMySQL.Models">
+  <class name="Album" table="Album" dynamic-update="true" >
+    <cache usage="read-write"/>
+    <id name="Id" column="AlbumId">
+      <generator class="native" />
+    </id>
+    <property name="Title" />
+    <set name="Tracks">
+      <key column="AlbumId"/>
+      <one-to-many class="Track"/>
+    </set>
+  </class>
+</hibernate-mapping>

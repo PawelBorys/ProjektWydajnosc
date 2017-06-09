@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="NHibernateMySQL" namespace="NHibernateMySQL.Models">
+  <class name="Track" table="Track" dynamic-update="true" >
+    <cache usage="read-write"/>
+    <id name="Id" column="TrackId">
+      <generator class="native" />
+    </id>
+    <property name="Name" />
+    <property name="Composer" />
+    <property name="Milliseconds" />
+    <property name="Bytes" />
+    <property name="UnitPrice" />
+    <set name="InvoiceLines">
+      <key column="TrackId"/>
+      <one-to-many class="InvoiceLine"/>
+    </set>
+    <set name="Playlists" table="playlist_track">
+      <key column="TrackId" />
+      <many-to-many class="Playlist" column="PlaylistId" />
+    </set>
+  </class>
+</hibernate-mapping>
