@@ -20,7 +20,7 @@ namespace NHibernateMSSQL.Models
 		public virtual string Fax { get; set; }
 		public virtual string Email { get; set; }
 		public virtual int SupportRepId { get; set; }
-		public virtual IList<Invoice> Invoices { get; set; }
+		public virtual ISet<Invoice> Invoices { get; set; }
 
 	}
 }

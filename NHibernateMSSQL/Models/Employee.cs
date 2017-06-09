@@ -7,7 +7,7 @@ namespace NHibernateMSSQL.Models
 {
 	public class Employee
 	{
-		public virtual int ID { get; set; }
+		public virtual int Id { get; set; }
 		public virtual string LastName { get; set; }
 		public virtual string FirstName { get; set; }
 		public virtual string Title { get; set; }
@@ -21,8 +21,8 @@ namespace NHibernateMSSQL.Models
 		public virtual string Phone { get; set; }
 		public virtual string Fax { get; set; }
 		public virtual string Email { get; set; }
-		public virtual IList<Employee> EmployeesReporting { get; set; }
-		public virtual IList<Customer> Customers { get; set; }
+		public virtual ISet<Employee> EmployeesReporting { get; set; }
+		public virtual ISet<Customer> Customers { get; set; }
 
 	}
 }

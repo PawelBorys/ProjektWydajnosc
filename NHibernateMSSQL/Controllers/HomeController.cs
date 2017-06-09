@@ -17,6 +17,8 @@ namespace NHibernateMSSQL.Controllers
 			using (ISession session = NHibernateSession.OpenSession())
 			{
 				var albums = session.Query<Artist>().FirstOrDefault().Albums.ToList();
+				ViewBag.employee = session.Query<Employee>().Where(e => e.EmployeesReporting.Count > 0).FirstOrDefault();
+				ViewBag.number = ((Employee)ViewBag.employee).EmployeesReporting.Count;
 				return View(albums);
 			}
         }

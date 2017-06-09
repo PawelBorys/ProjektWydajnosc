@@ -102,6 +102,14 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Models\NHibernate\Employee.hbm.xml" />
+    <Content Include="Models\NHibernate\Customer.hbm.xml" />
+    <Content Include="Models\NHibernate\Invoice.hbm.xml" />
+    <Content Include="Models\NHibernate\InvoiceLine.hbm.xml" />
+    <Content Include="Models\NHibernate\Genre.hbm.xml" />
+    <Content Include="Models\NHibernate\MediaType.hbm.xml" />
+    <Content Include="Models\NHibernate\Playlist.hbm.xml" />
+    <Content Include="Models\NHibernate\Track.hbm.xml" />
     <Content Include="Models\NHibernate\Artist.hbm.xml" />
     <Content Include="Models\NHibernate\Album.hbm.xml" />
     <Content Include="Models\NHibernate\hibernate.cfg.xml" />

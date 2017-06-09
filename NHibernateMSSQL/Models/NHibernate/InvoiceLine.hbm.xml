@@ -1,14 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="NHibernateMSSQL" namespace="NHibernateMSSQL.Models">
-  <class name="Album" table="Album" dynamic-update="true" >
+  <class name="InvoiceLine" table="InvoiceLine" dynamic-update="true" >
     <cache usage="read-write"/>
-    <id name="Id" column="AlbumId">
+    <id name="Id" column="InvoiceLineId">
       <generator class="native" />
     </id>
-    <property name="Title" />
-    <set name="Tracks">
-      <key column="AlbumId"/>
-      <one-to-many class="Track"/>
-    </set>
+    <property name="UnitPrice" />
+    <property name="Quantity" />
   </class>
 </hibernate-mapping>
