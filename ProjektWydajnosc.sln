@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernateMSSQL", "NHiberna
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernateMySQL", "NHibernateMySQL\NHibernateMySQL.csproj", "{A5780989-3837-4C08-AE71-DC8525032873}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADOMSSQL", "ADOMSSQL\ADOMSSQL.csproj", "{5C574DCF-9830-45E2-8611-DC5DE7EE0291}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADOMySQL", "ADOMySQL\ADOMySQL.csproj", "{79146793-D4D8-44C7-8CC8-97A9491FFF75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{A5780989-3837-4C08-AE71-DC8525032873}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5780989-3837-4C08-AE71-DC8525032873}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5780989-3837-4C08-AE71-DC8525032873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C574DCF-9830-45E2-8611-DC5DE7EE0291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C574DCF-9830-45E2-8611-DC5DE7EE0291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C574DCF-9830-45E2-8611-DC5DE7EE0291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C574DCF-9830-45E2-8611-DC5DE7EE0291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79146793-D4D8-44C7-8CC8-97A9491FFF75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79146793-D4D8-44C7-8CC8-97A9491FFF75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79146793-D4D8-44C7-8CC8-97A9491FFF75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79146793-D4D8-44C7-8CC8-97A9491FFF75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

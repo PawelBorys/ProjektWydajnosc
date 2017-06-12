@@ -1,10 +1,14 @@
-﻿@model IEnumerable<EntityFrameworkMSSQL.MediaType>
+﻿@model IEnumerable<EntityFrameworkMSSQL.Track>
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+
+<p>@ViewBag.time<br/>
+    @ViewBag.memory
+    </p>
 
 <p>
     @Html.ActionLink("Create New", "Create")
