@@ -138,6 +138,7 @@
     <Compile Include="Artist.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="MeasurementManager.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Customer.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
@@ -199,6 +200,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\POSTResult.cshtml" />
+    <Content Include="Views\Home\GetSingleTable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

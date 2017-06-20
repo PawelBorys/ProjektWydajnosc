@@ -11,23 +11,11 @@ namespace EntityFrameworkMSSQL.Controllers
     public class HomeController : Controller
     {
 		ChinookContext _context = new ChinookContext();
+		MeasurementManager mm = new MeasurementManager();
 
 		// GET: Home
-		public ActionResult Index(string scenario = "1a")
-        {
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-			GC.Collect();
-			var before = System.Diagnostics.Process.GetCurrentProcess().VirtualMemorySize64;
-
-			Stopwatch watch = Stopwatch.StartNew();
-
-			// do stuff...
-
-			watch.Stop();
-			ViewBag.time = watch.ElapsedMilliseconds;
-			ViewBag.memory = System.Diagnostics.Process.GetCurrentProcess().VirtualMemorySize64 - before;
-
+		public ActionResult Index()
+		{ 
 			return View();
 		}
 
@@ -37,24 +25,31 @@ namespace EntityFrameworkMSSQL.Controllers
 
 			if (count == 1)
 			{
+				mm.Start();
 				Track result = _context.Tracks.Find(1);
-								
+				mm.Stop();			
+					
 				resultList.Add(result);
 			}
 			else
 			{
+				mm.Start();
 				resultList = _context.Tracks.Take(count).ToList();
+				mm.Stop();
 			}
 
-
+			ViewBag.time = mm.milliseconds;
+			ViewBag.memory = mm.memory;
 			return View(resultList);
 		}
 
 		public ActionResult GetRelatedTables(int count)
 		{
+			mm.Start();
 			Track resultTrack = _context.Tracks.Find(1);
 			Album resultAlbum = resultTrack.Album;
 			Genre resultGenre = resultTrack.Genre;
+			mm.Stop();
 
 			TrackViewModel vm = new TrackViewModel()
 			{
@@ -63,6 +58,8 @@ namespace EntityFrameworkMSSQL.Controllers
 				AlbumName = resultAlbum.Title
 			};
 
+			ViewBag.time = mm.milliseconds;
+			ViewBag.memory = mm.memory;
 			return View(vm);
 		}
 
@@ -84,13 +81,19 @@ namespace EntityFrameworkMSSQL.Controllers
 
 			if (count == 1)
 			{
-				_context.Tracks.Add(tracks[0]);
+				mm.Start();
+				_context.Tracks.Add(tracks[0]);				
 			}
 			else
 			{
-				_context.Tracks.AddRange(tracks);
+				mm.Start();
+				_context.Tracks.AddRange(tracks);				
 			}
+			_context.SaveChanges();
+			mm.Stop();
 
+			ViewBag.time = mm.milliseconds;
+			ViewBag.memory = mm.memory;
 			return View("POSTResult");
 		}
 
@@ -111,48 +114,38 @@ namespace EntityFrameworkMSSQL.Controllers
 			};
 
 
-			//TODO:  potwierdzić, że nie trzeba ręczenie wstawiać encji dla genre i album jeśli track je zawiera
-			//if (count == 1)
-			//{
-			//	_context.Albums.Add(albums[0]);
-			//	_context.Genres.Add(genres[0]);
-			//}
-			//else
-			//{
-			//	_context.Albums.AddRange(albums);
-			//	_context.Genres.AddRange(genres);
-			//}
-
-			//_context.SaveChanges();
-
-
 			List<Track> tracks = new List<Track>();
 			for (int i = 0; i < count; i++)
 			{
 				Track newTrack = _context.Tracks.Create();
-				//newTrack.AlbumId = albums[i].AlbumId;
 				newTrack.Album = albums[i];
 				newTrack.Bytes = 123;
 				newTrack.Composer = "TestComposer";
-				//newTrack.GenreId = genres[i].GenreId;
 				newTrack.Genre = genres[i];
 				newTrack.MediaTypeId = 1;
 				newTrack.Milliseconds = 123;
 				newTrack.Name = "TestTrack " + i.ToString();
 				newTrack.UnitPrice = 99;
+
+				tracks.Add(newTrack);
 			}
 
 			if (count == 1)
 			{
+				mm.Start();
 				_context.Tracks.Add(tracks[0]);
 			}
 			else
 			{
+				mm.Start();
 				_context.Tracks.AddRange(tracks);
 			}
+			_context.SaveChanges();
+			mm.Stop();
 
+			ViewBag.time = mm.milliseconds;
+			ViewBag.memory = mm.memory;
 			return View("POSTResult");
 		}
-
     }
 }
