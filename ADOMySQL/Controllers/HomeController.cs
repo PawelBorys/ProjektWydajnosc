@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,44 +20,16 @@ namespace ADOMySQL.Controllers
 			MySqlCommand command = new MySqlCommand();
 			command.CommandType = System.Data.CommandType.Text;
 			command.Connection = conn;
-			command.CommandText = "select * from Track";
+			command.CommandText = "select top 1000 * from Track";
 
 			conn.Open();
 
-			MySqlDataReader reader = command.ExecuteReader();
-
-			while (reader.Read())
-			{
-				if (int.Parse(reader["TrackId"].ToString()) != 1)
-				{
-					continue;
-				}
-				else
-				{
-					results.Add(new Track()
-					{
-						Name = reader["Name"].ToString(),
-						Bytes = int.Parse(reader["Bytes"].ToString()),
-						Composer = reader["Composer"].ToString(),
-						Id = int.Parse(reader["TrackId"].ToString()),
-						Milliseconds = int.Parse(reader["Milliseconds"].ToString()),
-						UnitPrice = decimal.Parse(reader["UnitPrice"].ToString()),
-						InvoiceLines = new HashSet<InvoiceLine>(),
-						Playlists = new HashSet<Playlist>()
-					});
-					break;
-				}
-			}
-			reader.NextResult();
-
-			reader.Close();
+			DataSet ds = new DataSet();
+			MySqlDataAdapter adapter = new MySqlDataAdapter(command.CommandText, conn);
+			adapter.Fill(ds);
+			
 			conn.Close();
-
-
-
-
-
-			return View(results);
+			return View();
 		}
     }
 }

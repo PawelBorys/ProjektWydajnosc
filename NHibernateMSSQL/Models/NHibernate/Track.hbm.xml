@@ -14,7 +14,7 @@
       <key column="TrackId"/>
       <one-to-many class="InvoiceLine"/>
     </set>
-    <set name="Playlists" table="playlist_track">
+    <set name="Playlists" table="PlaylistTrack">
       <key column="TrackId" />
       <many-to-many class="Playlist" column="PlaylistId" />
     </set>

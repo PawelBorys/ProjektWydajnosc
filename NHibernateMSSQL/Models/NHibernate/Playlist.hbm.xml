@@ -6,7 +6,7 @@
       <generator class="native" />
     </id>
     <property name="Name" />
-    <set name="Tracks" table="playlist_track">
+    <set name="Tracks" table="PlaylistTrack">
       <key column="PlaylistId"/>
       <many-to-many class="Track" column="TrackId"/>
     </set>
