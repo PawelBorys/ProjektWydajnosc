@@ -6,7 +6,7 @@
       <generator class="native" />
     </id>
     <property name="Name" />
-    <set name="Tracks">
+    <set name="Tracks" cascade="all" inverse="true">
       <key column="MediaTypeId"/>
       <one-to-many class="Track"/>
     </set>

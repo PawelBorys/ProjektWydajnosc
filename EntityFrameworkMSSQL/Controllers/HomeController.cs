@@ -15,79 +15,133 @@ namespace EntityFrameworkMSSQL.Controllers
 
 		// GET: Home
 		public ActionResult Index()
-		{ 
+		{
 			return View();
 		}
 
-		public ActionResult GetSingleTable(int count)
+		public ActionResult GetSingleTables(int count)
 		{
-			List<Track> resultList = new List<Track>();
+			List<Artist> resultList = new List<Artist>();
 
-			if (count == 1)
+
+			mm.Start();
+			for (int i = 1; i <= count; i++)
 			{
-				mm.Start();
-				Track result = _context.Tracks.Find(1);
-				mm.Stop();			
-					
-				resultList.Add(result);
+				resultList.Add(_context.Artists.Find(i));
 			}
-			else
+			mm.Stop();
+
+
+			ViewBag.time = mm.milliseconds;
+			ViewBag.memory = mm.memory;
+			return View(resultList);
+		}
+	
+
+		public ActionResult GetRelatedTables(int count)
+		{
+			List<Track> tracks = new List<Track>();
+			List<Album> albums = new List<Album>();
+			List<Genre> genres = new List<Genre>();
+			List<MediaType> mediaTypes = new List<MediaType>();
+			List<TrackViewModel> vmList = new List<TrackViewModel>();
+
+			mm.Start();
+			for (int i = 0; i < count; i++)
 			{
-				mm.Start();
-				resultList = _context.Tracks.Take(count).ToList();
-				mm.Stop();
+				tracks.Add(_context.Tracks.Find(i+1));
+				albums.Add(tracks[i].Album);
+				genres.Add(tracks[i].Genre);
+				mediaTypes.Add(tracks[i].MediaType);
 			}
+			mm.Stop();
+
+			foreach (Track t in tracks)
+			{
+				TrackViewModel vm = new TrackViewModel()
+				{
+					Name = t.Name,
+					Genre = t.Genre.Name,
+					AlbumName = t.Album.Title,
+					MediaType = t.MediaType.Name
+				};
+
+			}
+
+			ViewBag.time = mm.milliseconds;
+			ViewBag.memory = mm.memory;
+			return View(vmList);
+		}
+
+		public ActionResult GetSingleTablesConditional()
+		{
+			List<Artist> resultList = new List<Artist>();
+
+
+			mm.Start();			
+			resultList = _context.Artists.Where(a => a.ArtistId < 500).ToList();			
+			mm.Stop();
+
 
 			ViewBag.time = mm.milliseconds;
 			ViewBag.memory = mm.memory;
 			return View(resultList);
 		}
 
-		public ActionResult GetRelatedTables(int count)
+
+		public ActionResult GetRelatedTablesConditional()
 		{
+			List<Track> tracks = new List<Track>();
+			List<Album> albums = new List<Album>();
+			List<Genre> genres = new List<Genre>();
+			List<MediaType> mediaTypes = new List<MediaType>();
+			List<TrackViewModel> vmList = new List<TrackViewModel>();
+
 			mm.Start();
-			Track resultTrack = _context.Tracks.Find(1);
-			Album resultAlbum = resultTrack.Album;
-			Genre resultGenre = resultTrack.Genre;
+			tracks = _context.Tracks.Where(t => t.Genre.Name == "Latin").ToList();
+			foreach (Track t in tracks)
+			{
+				albums.Add(t.Album);
+				genres.Add(t.Genre);
+				mediaTypes.Add(t.MediaType);
+			}			
 			mm.Stop();
 
-			TrackViewModel vm = new TrackViewModel()
+			foreach (Track t in tracks)
 			{
-				Name = resultTrack.Name,
-				Genre = resultGenre.Name,
-				AlbumName = resultAlbum.Title
-			};
+				TrackViewModel vm = new TrackViewModel()
+				{
+					Name = t.Name,
+					Genre = t.Genre.Name,
+					AlbumName = t.Album.Title,
+					MediaType = t.MediaType.Name
+				};
+
+			}
 
 			ViewBag.time = mm.milliseconds;
 			ViewBag.memory = mm.memory;
-			return View(vm);
+			return View(vmList);
 		}
 
-		public ActionResult InsertSingleTable(int count)
+		public ActionResult InsertSinglesTable(int count)
 		{
-			List<Track> tracks = new List<Track>();
-			for (int i = 0; i < count; i++)
+			List<Artist> artists = new List<Artist>();
+			for (int i = 1; i <= count; i++)
 			{
-				Track newTrack = _context.Tracks.Create();
-				newTrack.AlbumId = 1;
-				newTrack.Bytes = 123;
-				newTrack.Composer = "TestComposer";
-				newTrack.GenreId = 1;
-				newTrack.MediaTypeId = 1;
-				newTrack.Milliseconds = 123;
-				newTrack.Name = "TestTrack " + i.ToString();
-				newTrack.UnitPrice = 99;
+				Artist newArtist = _context.Artists.Create();
+				newArtist.Name = "Inserted Artist " + i.ToString();
 			}
 
 			if (count == 1)
 			{
 				mm.Start();
-				_context.Tracks.Add(tracks[0]);				
+				_context.Artists.Add(artists[0]);				
 			}
 			else
 			{
 				mm.Start();
-				_context.Tracks.AddRange(tracks);				
+				_context.Artists.AddRange(artists);				
 			}
 			_context.SaveChanges();
 			mm.Stop();
@@ -101,16 +155,21 @@ namespace EntityFrameworkMSSQL.Controllers
 		{
 			List<Album> albums = new List<Album>();
 			List<Genre> genres = new List<Genre>();
+			List<MediaType> mediaTypes = new List<MediaType>();
 			for (int i = 0; i < count; i++)
 			{
 				Album newAlbum = _context.Albums.Create();
 				newAlbum.ArtistId = 1;
-				newAlbum.Title = "Test Album " + i.ToString();
+				newAlbum.Title = "Inserted Album " + i.ToString();
 				albums.Add(newAlbum);
 
 				Genre newGenre = _context.Genres.Create();
-				newGenre.Name = "Test Genre " + i.ToString();
+				newGenre.Name = "Inserted Genre " + i.ToString();
 				genres.Add(newGenre);
+
+				MediaType newType = _context.MediaTypes.Create();
+				newType.Name = "Inserted Media Type";
+				mediaTypes.Add(newType); 
 			};
 
 
@@ -120,11 +179,11 @@ namespace EntityFrameworkMSSQL.Controllers
 				Track newTrack = _context.Tracks.Create();
 				newTrack.Album = albums[i];
 				newTrack.Bytes = 123;
-				newTrack.Composer = "TestComposer";
+				newTrack.Composer = "Inseted Composer";
 				newTrack.Genre = genres[i];
-				newTrack.MediaTypeId = 1;
+				newTrack.MediaType = mediaTypes[i];
 				newTrack.Milliseconds = 123;
-				newTrack.Name = "TestTrack " + i.ToString();
+				newTrack.Name = "Inseted Track " + i.ToString();
 				newTrack.UnitPrice = 99;
 
 				tracks.Add(newTrack);

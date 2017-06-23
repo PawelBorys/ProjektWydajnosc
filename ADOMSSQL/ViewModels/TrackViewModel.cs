@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace EntityFrameworkMSSQL.ViewModels
+namespace ADOMSSQL.ViewModels
 {
 	public class TrackViewModel
 	{

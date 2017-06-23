@@ -14,9 +14,12 @@
       <key column="TrackId"/>
       <one-to-many class="InvoiceLine"/>
     </set>
-    <set name="Playlists" table="PlaylistTrack">
+    <set name="Playlists" table="PlaylistTrack" cascade="all">
       <key column="TrackId" />
       <many-to-many class="Playlist" column="PlaylistId" />
     </set>
+    <many-to-one name="Album" column="AlbumId" cascade="all" not-null="true" />
+    <many-to-one name="Genre" column="GenreId" cascade="all" not-null="true"/>
+    <many-to-one name="MediaType" column="MediaTypeId" cascade="all" not-null="true" />
   </class>
 </hibernate-mapping>

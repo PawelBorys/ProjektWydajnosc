@@ -1,0 +1,47 @@
+﻿@model IEnumerable<NHibernateMSSQL.ViewModels.TrackViewModel>
+
+@{
+    ViewBag.Title = "GetRelatedTables";
+}
+
+<h2>GetRelatedTables</h2>
+
+<p>
+    Time: @ViewBag.time
+    <br/>
+    Memory: @ViewBag.memory
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AlbumName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MediaType)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AlbumName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Genre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MediaType)
+        </td>
+    </tr>
+}
+
+</table>

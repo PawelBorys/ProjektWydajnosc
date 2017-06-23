@@ -6,9 +6,10 @@
       <generator class="native" />
     </id>
     <property name="Title" />
-    <set name="Tracks">
+    <set name="Tracks" cascade="all" inverse="true">
       <key column="AlbumId"/>
       <one-to-many class="Track"/>
     </set>
+    <many-to-one name="Artist" column="ArtistId" cascade="all" not-null="true" />
   </class>
 </hibernate-mapping>
