@@ -344,15 +344,15 @@ namespace ADOMSSQL.Controllers
 			mm.Start();
 			for (int i = 0; i < count; i++)
 			{
-				command.CommandText = "INSERT INTO Album(Name) OUTPUT INSERTED.GenreId VALUES(@name)";
+				command.CommandText = "INSERT INTO Genre(Name) OUTPUT INSERTED.GenreId VALUES(@name)";
 				command.Parameters.Clear();
 				command.Parameters.AddWithValue("@name", genres[i].Name);
 				int genreId = (int)command.ExecuteScalar();
-				command.CommandText = "INSERT INTO Album(Name) OUTPUT INSERTED.AlbumId VALUES(@name)";
+				command.CommandText = "INSERT INTO Album(Title) OUTPUT INSERTED.AlbumId VALUES(@name)";
 				command.Parameters.Clear();
 				command.Parameters.AddWithValue("@name", albums[i].Title);
 				int AlbumId = (int)command.ExecuteScalar();
-				command.CommandText = "INSERT INTO Album(Name) OUTPUT INSERTED.MediaTypeId VALUES(@name)";
+				command.CommandText = "INSERT INTO MediaType(Name) OUTPUT INSERTED.MediaTypeId VALUES(@name)";
 				command.Parameters.Clear();
 				command.Parameters.AddWithValue("@name", mediaTypes[i].Name);
 				int MediaTypeId = (int)command.ExecuteScalar();
@@ -363,6 +363,7 @@ namespace ADOMSSQL.Controllers
 
 				command.CommandText = "INSERT INTO Track(Name, AlbumId, MediaTypeId, GenreId, Composer, Milliseconds, Bytes, UnitPrice) " +
 					"VALUES(@name, @albumId, @mediaTypeId, @genreId, @composer, @milliseconds, @bytes, @unitPrice)";
+				command.Parameters.Clear();
 				command.Parameters.AddWithValue("@name", tracks[i].Name);
 				command.Parameters.AddWithValue("@albumId", tracks[i].AlbumId);
 				command.Parameters.AddWithValue("@mediaTypeId", tracks[i].MediaTypeId);

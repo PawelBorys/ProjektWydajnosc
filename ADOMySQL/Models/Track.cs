@@ -11,6 +11,9 @@ namespace ADOMySQL.Models
 		public virtual int Milliseconds { get; set; }
 		public virtual int Bytes { get; set; }
 		public virtual Decimal UnitPrice { get; set; }
+		public virtual int AlbumId { get; set; }
+		public virtual int GenreId { get; set; }
+		public virtual int MediaTypeId { get; set; }
 		public virtual ISet<InvoiceLine> InvoiceLines { get; set; }
 		public virtual ISet<Playlist> Playlists { get; set; }
 	}

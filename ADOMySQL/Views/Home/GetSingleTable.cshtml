@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ADOMySQL.Models.Artist>
+
+@{
+    ViewBag.Title = "GetSingleTable";
+}
+
+<h2>GetSingleTable</h2>
+
+<p>
+    Time: @ViewBag.time
+    <br/>
+    Memory: @ViewBag.memory
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+    </tr>
+}
+
+</table>

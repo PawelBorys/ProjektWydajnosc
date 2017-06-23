@@ -184,6 +184,7 @@
     <Compile Include="invoiceline.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="MeasurementManager.cs" />
     <Compile Include="mediatype.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -194,6 +195,7 @@
     <Compile Include="track.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\TrackViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -209,6 +211,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Home\GetSingleTable.cshtml" />
+    <Content Include="Views\Home\POSTResult.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -222,6 +226,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EntityFrameworkMSSQL\EntityFrameworkMSSQL.csproj">
+      <Project>{AC2A2A73-B567-4DA8-A5F7-950A63D5F5E3}</Project>
+      <Name>EntityFrameworkMSSQL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

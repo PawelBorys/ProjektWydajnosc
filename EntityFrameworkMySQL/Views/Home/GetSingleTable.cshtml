@@ -1,0 +1,35 @@
+﻿@model IEnumerable<EntityFrameworkMySQL.Artist>
+
+@{
+    ViewBag.Title = "GetSingleTable";
+}
+
+<h2>GetSingleTable</h2>
+
+<p>
+    Time: @ViewBag.time
+    Memory: @ViewBag.memory
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ArtistId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ArtistId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+    </tr>
+}
+
+</table>
