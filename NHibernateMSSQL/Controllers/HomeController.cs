@@ -1,17 +1,15 @@
-﻿using NHibernate;
+﻿using Infrastructure;
+using NHibernate;
 using NHibernate.Linq;
 using NHibernateMSSQL.Models;
 using NHibernateMSSQL.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace NHibernateMSSQL.Controllers
 {
-    public class HomeController : Controller
+	public class HomeController : Controller, IMyController
     {
 		MeasurementManager mm = new MeasurementManager();
 

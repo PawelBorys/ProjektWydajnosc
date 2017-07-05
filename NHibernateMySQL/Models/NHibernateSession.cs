@@ -11,6 +11,18 @@ namespace NHibernateMSSQL.Models
 	{
 		public static ISession OpenSession()
 		{
+			ISessionFactory sessionFactory = Configure().BuildSessionFactory();
+			return sessionFactory.OpenSession();
+		}
+
+		public static IStatelessSession OpenStatelessSession()
+		{
+			ISessionFactory sessionFactory = Configure().BuildSessionFactory();
+			return sessionFactory.OpenStatelessSession();
+		}
+
+		private static Configuration Configure()
+		{
 			var configuration = new Configuration();
 			var configurationPath = HttpContext.Current.Server.MapPath(@"~\Models\NHibernate\hibernate.cfg.xml");
 			configuration.Configure(configurationPath);
@@ -36,9 +48,7 @@ namespace NHibernateMSSQL.Models
 			var TrackConfigurationFile = HttpContext.Current.Server.MapPath(@"~\Models\NHibernate\Track.hbm.xml");
 			configuration.AddFile(TrackConfigurationFile);
 
-
-			ISessionFactory sessionFactory = configuration.BuildSessionFactory();
-			return sessionFactory.OpenSession();
+			return configuration;
 		}
 	}
 }

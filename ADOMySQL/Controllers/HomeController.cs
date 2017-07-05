@@ -1,5 +1,6 @@
 ﻿using ADOMySQL.Models;
 using ADOMySQL.ViewModels;
+using Infrastructure;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace ADOMySQL.Controllers
 		}
     }*/
 
-	public class HomeController : Controller
+	public class HomeController : Controller, IMyController
 	{
 		MySqlConnection conn = new MySqlConnection(@"Server=localhost;Database=chinook;User ID=root");
 		MeasurementManager mm = new MeasurementManager();
@@ -45,7 +46,7 @@ namespace ADOMySQL.Controllers
 			return View();
 		}
 
-		public ActionResult GetSingleTable(int count)
+		public ActionResult GetSingleTables(int count)
 		{
 			MySqlCommand command = new MySqlCommand();
 			command.CommandType = CommandType.Text;
@@ -163,7 +164,7 @@ namespace ADOMySQL.Controllers
 			return View(vmList);
 		}
 
-		public ActionResult GetSingleTableConditional()
+		public ActionResult GetSingleTablesConditional()
 		{
 			MySqlCommand command = new MySqlCommand();
 			command.CommandType = CommandType.Text;
@@ -274,7 +275,7 @@ namespace ADOMySQL.Controllers
 			return View(vmList);
 		}
 
-		public ActionResult InsertSingleTable(int count)
+		public ActionResult InsertSingleTables(int count)
 		{
 			MySqlCommand command = new MySqlCommand();
 			command.CommandType = CommandType.Text;

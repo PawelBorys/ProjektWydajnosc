@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADOMSSQL", "ADOMSSQL\ADOMSS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADOMySQL", "ADOMySQL\ADOMySQL.csproj", "{79146793-D4D8-44C7-8CC8-97A9491FFF75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{C3469F2B-42A7-4F88-B5B4-1E30A6E8C135}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{79146793-D4D8-44C7-8CC8-97A9491FFF75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79146793-D4D8-44C7-8CC8-97A9491FFF75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79146793-D4D8-44C7-8CC8-97A9491FFF75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3469F2B-42A7-4F88-B5B4-1E30A6E8C135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3469F2B-42A7-4F88-B5B4-1E30A6E8C135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3469F2B-42A7-4F88-B5B4-1E30A6E8C135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3469F2B-42A7-4F88-B5B4-1E30A6E8C135}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

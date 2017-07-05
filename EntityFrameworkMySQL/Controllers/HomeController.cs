@@ -1,5 +1,6 @@
 ﻿using EntityFrameworkMySQL;
 using EntityFrameworkMySQL.ViewModels;
+using Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ using System.Web.Mvc;
 
 namespace EntityFrameworkMySQL.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller, IMyController
     {
 		ChinookContext _context = new ChinookContext();
 		MeasurementManager mm = new MeasurementManager();
@@ -125,7 +126,7 @@ namespace EntityFrameworkMySQL.Controllers
 			return View(vmList);
 		}
 
-		public ActionResult InsertSinglesTable(int count)
+		public ActionResult InsertSingleTables(int count)
 		{
 			List<artist> artists = new List<artist>();
 			for (int i = 1; i <= count; i++)

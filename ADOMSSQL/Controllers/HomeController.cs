@@ -1,5 +1,6 @@
 ﻿using ADOMSSQL.Models;
 using ADOMSSQL.ViewModels;
+using Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace ADOMSSQL.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller, IMyController
     {
 		SqlConnection conn = new SqlConnection(@"data source=KOPUTER_PAWLA\SQLEXPRESS;initial catalog=Chinook;integrated security=SSPI;");
 		MeasurementManager mm = new MeasurementManager();
@@ -38,7 +39,7 @@ namespace ADOMSSQL.Controllers
 			return View();
 		}
 
-		public ActionResult GetSingleTable(int count)
+		public ActionResult GetSingleTables(int count)
 		{
 			SqlCommand command = new SqlCommand();
 			command.CommandType = CommandType.Text;
@@ -156,7 +157,7 @@ namespace ADOMSSQL.Controllers
 			return View(vmList);
 		}
 
-		public ActionResult GetSingleTableConditional()
+		public ActionResult GetSingleTablesConditional()
 		{
 			SqlCommand command = new SqlCommand();
 			command.CommandType = CommandType.Text;
@@ -267,7 +268,7 @@ namespace ADOMSSQL.Controllers
 			return View(vmList);
 		}
 
-		public ActionResult InsertSingleTable(int count)
+		public ActionResult InsertSingleTables(int count)
 		{
 			SqlCommand command = new SqlCommand();
 			command.CommandType = CommandType.Text;

@@ -184,7 +184,6 @@
     <Compile Include="invoiceline.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MeasurementManager.cs" />
     <Compile Include="mediatype.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -231,6 +230,10 @@
     <ProjectReference Include="..\EntityFrameworkMSSQL\EntityFrameworkMSSQL.csproj">
       <Project>{AC2A2A73-B567-4DA8-A5F7-950A63D5F5E3}</Project>
       <Name>EntityFrameworkMSSQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{c3469f2b-42a7-4f88-b5b4-1e30a6e8c135}</Project>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
