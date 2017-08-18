@@ -194,7 +194,6 @@
     <Compile Include="track.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\TrackViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -212,6 +211,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\GetSingleTable.cshtml" />
     <Content Include="Views\Home\POSTResult.cshtml" />
+    <Content Include="Views\Home\MeasurementResults.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -11,8 +11,8 @@ namespace Infrastructure
 	{
 		ActionResult GetSingleTables(int count);
 		ActionResult GetRelatedTables(int count);
-		ActionResult GetSingleTablesConditional();
-		ActionResult GetRelatedTablesConditional();
+		ActionResult GetSingleTablesConditional(int count);
+		ActionResult GetRelatedTablesConditional(int count);
 		ActionResult InsertSingleTables(int count);
 		ActionResult InsertRelatedTables(int count);
 

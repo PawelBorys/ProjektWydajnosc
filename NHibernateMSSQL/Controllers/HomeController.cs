@@ -1,8 +1,8 @@
 ﻿using Infrastructure;
+using Infrastructure.ViewModels;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernateMSSQL.Models;
-using NHibernateMSSQL.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -11,7 +11,7 @@ namespace NHibernateMSSQL.Controllers
 {
 	public class HomeController : Controller, IMyController
     {
-		MeasurementManager mm = new MeasurementManager();
+		MeasurementManager measurement = new MeasurementManager();
 
 		// GET: Home
 		public ActionResult Index()
@@ -21,216 +21,204 @@ namespace NHibernateMSSQL.Controllers
 
 		public ActionResult GetSingleTables(int count)
 		{
-			List<Artist> resultList = new List<Artist>();
-			using (ISession session = NHibernateSession.OpenSession())
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
+
+			for (int i = 0; i < count; i++)
 			{
-				mm.Start();
-				for (int i = 1; i <= count; i++)
+				using (ISession session = NHibernateSession.OpenSession())
 				{
-					resultList.Add(session.Get<Artist>(i));
+					List<Artist> artists = new List<Artist>();
+
+					measurement.Start();
+					for (int j = 1; j <= 1000; j++)
+					{
+						artists.Add(session.Get<Artist>(j));
+					}
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+					session.Clear();
 				}
-				mm.Stop();
 			}
 
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View(resultList);
+			return View("MeasurementResults", results);
 		}
 
 		public ActionResult GetRelatedTables(int count)
 		{
-			List<Track> tracks = new List<Track>();
-			List<Album> albums = new List<Album>();
-			List<Genre> genres = new List<Genre>();
-			List<MediaType> mediaTypes = new List<MediaType>();
-			List<TrackViewModel> vmList = new List<TrackViewModel>();
-
-			using (ISession session = NHibernateSession.OpenSession())
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
+			
+			for (int j = 0; j < count; j++)
 			{
-				mm.Start();
-				for (int i = 0; i < count; i++)
-				{
-					tracks.Add(session.Get<Track>(i + 1));
-					albums.Add(tracks[i].Album);
-					genres.Add(tracks[i].Genre);
-					mediaTypes.Add(tracks[i].MediaType);
-				}
-				mm.Stop();
+				List<Track> tracks = new List<Track>();
+				List<Album> albums = new List<Album>();
+				List<Genre> genres = new List<Genre>();
+				List<MediaType> mediaTypes = new List<MediaType>();
 
-
-				foreach (Track t in tracks)
+				using (ISession session = NHibernateSession.OpenSession()) 
 				{
-					TrackViewModel vm = new TrackViewModel()
+					measurement.Start();
+					for (int i = 0; i < 1000; i++)
 					{
-						Name = t.Name,
-						Genre = t.Genre.Name,
-						AlbumName = t.Album.Title,
-						MediaType = t.MediaType.Name
-					};
-					vmList.Add(vm);
-
+						tracks.Add(session.Get<Track>(i + 1));
+						albums.Add(tracks[i].Album);
+						genres.Add(tracks[i].Genre);
+						mediaTypes.Add(tracks[i].MediaType);
+					}
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+					session.Clear();
 				}
 			}
 
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View(vmList);
+			return View("MeasurementResults", results);
+		}
+
+		public ActionResult GetSingleTablesConditional(int count)
+		{
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
+
+			for (int i = 0; i < count; i++)
+			{
+				List<Artist> artists = new List<Artist>();
+
+				using (ISession session = NHibernateSession.OpenSession())
+				{
+					measurement.Start();
+					artists = session.Query<Artist>().Where(a => a.Id <= 1000).ToList();
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+					session.Clear();
+				}
+			}
+
+			return View("MeasurementResults", results);
 		}
 		
-		public ActionResult GetSingleTablesConditional()
+		public ActionResult GetRelatedTablesConditional(int count)
 		{
-			List<Artist> resultList = new List<Artist>();
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
 
-			using (ISession session = NHibernateSession.OpenSession())
+			for (int i = 0; i < count; i++)
 			{
-				mm.Start();
+				List<Track> tracks = new List<Track>();
+				List<Album> albums = new List<Album>();
+				List<Genre> genres = new List<Genre>();
+				List<MediaType> mediaTypes = new List<MediaType>();
 
-				resultList = session.Query<Artist>().Where(a => a.Id < 500).ToList();
-				//resultList = _context.Artists.Where(a => a.ArtistId < 500).ToList();
-
-				mm.Stop();
-			}
-
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View("GetSingleTables", resultList);
-		}
-		
-		public ActionResult GetRelatedTablesConditional()
-		{
-			List<Track> tracks = new List<Track>();
-			List<Album> albums = new List<Album>();
-			List<Genre> genres = new List<Genre>();
-			List<MediaType> mediaTypes = new List<MediaType>();
-			List<TrackViewModel> vmList = new List<TrackViewModel>();
-
-			using (ISession session = NHibernateSession.OpenSession())
-			{
-				mm.Start();
-
-				//tracks = _context.Tracks.Where(t => t.Genre.Name == "Latin").ToList();
-				tracks = session.Query<Track>().Where(t => t.Genre.Name == "Latin").ToList();
-				foreach (Track t in tracks)
+				using (ISession session = NHibernateSession.OpenSession())
 				{
-					albums.Add(t.Album);
-					genres.Add(t.Genre);
-					mediaTypes.Add(t.MediaType);
-				}
-				mm.Stop();
-
-				foreach (Track t in tracks)
-				{
-					TrackViewModel vm = new TrackViewModel()
+					measurement.Start();
+					tracks = session.Query<Track>().Where(t => t.Genre.Name == "Latin").ToList();
+					foreach (Track t in tracks)
 					{
-						Name = t.Name,
-						Genre = t.Genre.Name,
-						AlbumName = t.Album.Title,
-						MediaType = t.MediaType.Name
-					};
-					vmList.Add(vm);
+						albums.Add(t.Album);
+						genres.Add(t.Genre);
+						mediaTypes.Add(t.MediaType);
+					}
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+					session.Clear();
 				}
 			}
 
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View("GetRelatedTables", vmList);
+			return View("MeasurementResults", results);
 		}
 
 
 		public ActionResult InsertSingleTables(int count)
 		{
-			List<Artist> artists = new List<Artist>();
-			for (int i = 1; i <= count; i++)
-			{
-				Artist newArtist = new Artist();
-				newArtist.Name = "Inserted Artist " + i.ToString();
-			}
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
 
-			
-			using (IStatelessSession session = NHibernateSession.OpenStatelessSession())
+			for (int i = 0; i < count; i++)
 			{
-				mm.Start();
-				using (ITransaction transaction = session.BeginTransaction())
+				List<Artist> artists = new List<Artist>();
+				for (int j = 0; j < 100; j++)
 				{
-					
-					for (int i = 0; i < artists.Count; i++)
-					{
-						session.Insert(artists[i]);
-					}
-					transaction.Commit();
+					Artist newArtist = new Artist();
+					newArtist.Name = "Inserted Artist " + j.ToString();
+					artists.Add(newArtist);
 				}
-				mm.Stop();
 
+				using (ISession session = NHibernateSession.OpenSession())
+				{
+					measurement.Start();
+					using (ITransaction transaction = session.BeginTransaction())
+					{
+						for (int j = 0; j < artists.Count; j++)
+						{
+							session.Save(artists[j]);
+						}
+						transaction.Commit();
+					}
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+				}
 			}
 
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View("POSTResult");
+			return View("MeasurementResults", results);
 		}
 
 
 		public ActionResult InsertRelatedTables(int count)
 		{
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
+
 			using (ISession session = NHibernateSession.OpenSession())
 			{
-				List<Album> albums = new List<Album>();
-				List<Genre> genres = new List<Genre>();
-				List<MediaType> mediaTypes = new List<MediaType>();
 				for (int i = 0; i < count; i++)
 				{
-					Album newAlbum = new Album();
-					newAlbum.Artist = session.Get<Artist>(1);
-					newAlbum.Title = "Inserted Album " + i.ToString();
-					albums.Add(newAlbum);
-
-					Genre newGenre = new Genre();
-					newGenre.Name = "Inserted Genre " + i.ToString();
-					genres.Add(newGenre);
-
-					MediaType newType = new MediaType();
-					newType.Name = "Inserted Media Type";
-					mediaTypes.Add(newType);
-				};
-
-
-				List<Track> tracks = new List<Track>();
-				for (int i = 0; i < count; i++)
-				{
-					Track newTrack = new Track();
-					newTrack.Album = albums[i];
-					newTrack.Bytes = 123;
-					newTrack.Composer = "Inseted Composer";
-					newTrack.Genre = genres[i];
-					newTrack.MediaType = mediaTypes[i];
-					newTrack.Milliseconds = 123;
-					newTrack.Name = "Inseted Track " + i.ToString();
-					newTrack.UnitPrice = 99;
-
-					tracks.Add(newTrack);
-					albums[i].Tracks.Add(newTrack);
-					genres[i].Tracks.Add(newTrack);
-					mediaTypes[i].Tracks.Add(newTrack);
-				}
-
-
-				mm.Start();
-				using (ITransaction transaction = session.BeginTransaction())
-				{					
-					for (int i = 0; i < tracks.Count; i++)
+					List<Album> albums = new List<Album>();
+					List<Genre> genres = new List<Genre>();
+					List<MediaType> mediaTypes = new List<MediaType>();
+					for (int j = 0; j < 100; j++)
 					{
-						session.Save(tracks[i]);
+						Album newAlbum = new Album();
+						newAlbum.Artist = session.Get<Artist>(1);
+						newAlbum.Title = "Inserted Album " + j.ToString();
+						albums.Add(newAlbum);
+
+						Genre newGenre = new Genre();
+						newGenre.Name = "Inserted Genre " + j.ToString();
+						genres.Add(newGenre);
+
+						MediaType newType = new MediaType();
+						newType.Name = "Inserted Media Type";
+						mediaTypes.Add(newType);
+					};
+
+					List<Track> tracks = new List<Track>();
+					for (int j = 0; j < 100; j++)
+					{
+						Track newTrack = new Track();
+						newTrack.Album = albums[j];
+						newTrack.Bytes = 123;
+						newTrack.Composer = "Inseted Composer";
+						newTrack.Genre = genres[j];
+						newTrack.MediaType = mediaTypes[j];
+						newTrack.Milliseconds = 123;
+						newTrack.Name = "Inseted Track " + j.ToString();
+						newTrack.UnitPrice = 99;
+
+						tracks.Add(newTrack);
+						albums[j].Tracks.Add(newTrack);
+						genres[j].Tracks.Add(newTrack);
+						mediaTypes[j].Tracks.Add(newTrack);
 					}
-					transaction.Commit();
+
+					measurement.Start();
+					using (ITransaction transaction = session.BeginTransaction())
+					{
+						for (int j = 0; j < tracks.Count; j++)
+						{
+							session.Save(tracks[j]);
+						}
+						transaction.Commit();
+					}
+					measurement.Stop();
 				}
-				mm.Stop();
 			}
 
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View("POSTResult");
+			return View("MeasurementResults", results);
 		}
-		
-
-
 	}
 }

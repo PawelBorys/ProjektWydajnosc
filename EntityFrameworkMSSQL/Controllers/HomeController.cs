@@ -1,18 +1,14 @@
-﻿using EntityFrameworkMSSQL.ViewModels;
-using Infrastructure;
-using System;
+﻿using Infrastructure;
+using Infrastructure.ViewModels;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EntityFrameworkMSSQL.Controllers
 {
-    public class HomeController : Controller, IMyController
+	public class HomeController : Controller, IMyController
     {
-		ChinookContext _context = new ChinookContext();
-		MeasurementManager mm = new MeasurementManager();
+		MeasurementManager measurement = new MeasurementManager();
 
 		// GET: Home
 		public ActionResult Index()
@@ -22,190 +18,189 @@ namespace EntityFrameworkMSSQL.Controllers
 
 		public ActionResult GetSingleTables(int count)
 		{
-			List<Artist> resultList = new List<Artist>();
-
-
-			mm.Start();
-			for (int i = 1; i <= count; i++)
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
+			for (int i = 0; i < count; i++)
 			{
-				resultList.Add(_context.Artists.Find(i));
+				List<Artist> resultList = new List<Artist>();
+
+				using (ChinookContext context = new ChinookContext())
+				{
+					context.Artists.ToList();
+					measurement.Start();
+					for (int j = 1; j <= 1000; j++)
+					{
+						resultList.Add(context.Artists.AsNoTracking().Where(a => a.ArtistId == j).Single());
+					}
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+				}
 			}
-			mm.Stop();
 
-
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View(resultList);
+			return View("MeasurementResults", results);
 		}
 	
 
 		public ActionResult GetRelatedTables(int count)
 		{
-			List<Track> tracks = new List<Track>();
-			List<Album> albums = new List<Album>();
-			List<Genre> genres = new List<Genre>();
-			List<MediaType> mediaTypes = new List<MediaType>();
-			List<TrackViewModel> vmList = new List<TrackViewModel>();
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
 
-			mm.Start();
+			using (ChinookContext context = new ChinookContext())
+			{
+				for (int i = 0; i < count; i++)
+				{
+					List<Track> tracks = new List<Track>();
+					List<Album> albums = new List<Album>();
+					List<Genre> genres = new List<Genre>();
+					List<MediaType> mediaTypes = new List<MediaType>();
+					List<TrackViewModel> vmList = new List<TrackViewModel>();
+
+					measurement.Start();
+					for (int j = 0; j < 1000; j++)
+					{
+						tracks.Add(context.Tracks.Where(t => t.TrackId == j + 1).Single());
+						albums.Add(tracks[j].Album);
+						genres.Add(tracks[j].Genre);
+						mediaTypes.Add(tracks[j].MediaType);
+					}
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+				}
+			}
+
+			return View("MeasurementResults", results);
+		}
+
+		public ActionResult GetSingleTablesConditional(int count)
+		{
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
+
 			for (int i = 0; i < count; i++)
 			{
-				tracks.Add(_context.Tracks.Find(i+1));
-				albums.Add(tracks[i].Album);
-				genres.Add(tracks[i].Genre);
-				mediaTypes.Add(tracks[i].MediaType);
-			}
-			mm.Stop();
-
-			foreach (Track t in tracks)
-			{
-				TrackViewModel vm = new TrackViewModel()
+				using (ChinookContext context = new ChinookContext())
 				{
-					Name = t.Name,
-					Genre = t.Genre.Name,
-					AlbumName = t.Album.Title,
-					MediaType = t.MediaType.Name
-				};
+					context.Artists.ToList();
 
+					List<Artist> artists = new List<Artist>();
+					measurement.Start();
+					artists = context.Artists.Where(a => a.ArtistId <= 1000).ToList();
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+				}
 			}
-
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View(vmList);
+			
+			return View("MeasurementResults", results);
 		}
 
-		public ActionResult GetSingleTablesConditional()
+		public ActionResult GetRelatedTablesConditional(int count)
 		{
-			List<Artist> resultList = new List<Artist>();
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
 
-
-			mm.Start();			
-			resultList = _context.Artists.Where(a => a.ArtistId < 500).ToList();			
-			mm.Stop();
-
-
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View(resultList);
-		}
-
-
-		public ActionResult GetRelatedTablesConditional()
-		{
-			List<Track> tracks = new List<Track>();
-			List<Album> albums = new List<Album>();
-			List<Genre> genres = new List<Genre>();
-			List<MediaType> mediaTypes = new List<MediaType>();
-			List<TrackViewModel> vmList = new List<TrackViewModel>();
-
-			mm.Start();
-			tracks = _context.Tracks.Where(t => t.Genre.Name == "Latin").ToList();
-			foreach (Track t in tracks)
+			for (int i = 0; i < count; i++)
 			{
-				albums.Add(t.Album);
-				genres.Add(t.Genre);
-				mediaTypes.Add(t.MediaType);
-			}			
-			mm.Stop();
+				List<Track> tracks = new List<Track>();
+				List<Album> albums = new List<Album>();
+				List<Genre> genres = new List<Genre>();
+				List<MediaType> mediaTypes = new List<MediaType>();
 
-			foreach (Track t in tracks)
-			{
-				TrackViewModel vm = new TrackViewModel()
+				using (ChinookContext context = new ChinookContext())
 				{
-					Name = t.Name,
-					Genre = t.Genre.Name,
-					AlbumName = t.Album.Title,
-					MediaType = t.MediaType.Name
-				};
-
+					measurement.Start();
+					tracks = context.Tracks.Where(t => t.Genre.Name == "Latin").ToList();
+					foreach (Track t in tracks)
+					{
+						albums.Add(t.Album);
+						genres.Add(t.Genre);
+						mediaTypes.Add(t.MediaType);
+					}
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+				}
 			}
-
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View(vmList);
+			
+			return View("MeasurementResults", results);
 		}
 
 		public ActionResult InsertSingleTables(int count)
 		{
-			List<Artist> artists = new List<Artist>();
-			for (int i = 1; i <= count; i++)
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
+
+			for (int i = 0; i < count; i++)
 			{
-				Artist newArtist = _context.Artists.Create();
-				newArtist.Name = "Inserted Artist " + i.ToString();
+				List<Artist> artists = new List<Artist>();
+
+				using (ChinookContext context = new ChinookContext())
+				{
+					for (int j = 0; j < 100; j++)
+					{
+						Artist newArtist = context.Artists.Create();
+						newArtist.Name = "Inserted Artist " + j.ToString();
+					}
+
+					measurement.Start();
+					context.Artists.AddRange(artists);
+					context.SaveChanges();
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+				}
 			}
 
-			if (count == 1)
-			{
-				mm.Start();
-				_context.Artists.Add(artists[0]);				
-			}
-			else
-			{
-				mm.Start();
-				_context.Artists.AddRange(artists);				
-			}
-			_context.SaveChanges();
-			mm.Stop();
-
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View("POSTResult");
+			return View("MeasurementResults", results);
 		}
 
 		public ActionResult InsertRelatedTables(int count)
 		{
-			List<Album> albums = new List<Album>();
-			List<Genre> genres = new List<Genre>();
-			List<MediaType> mediaTypes = new List<MediaType>();
+			List<MeasurementViewModel> results = new List<MeasurementViewModel>();
+
 			for (int i = 0; i < count; i++)
 			{
-				Album newAlbum = _context.Albums.Create();
-				newAlbum.ArtistId = 1;
-				newAlbum.Title = "Inserted Album " + i.ToString();
-				albums.Add(newAlbum);
+				List<Album> albums = new List<Album>();
+				List<Genre> genres = new List<Genre>();
+				List<MediaType> mediaTypes = new List<MediaType>();
 
-				Genre newGenre = _context.Genres.Create();
-				newGenre.Name = "Inserted Genre " + i.ToString();
-				genres.Add(newGenre);
+				using (ChinookContext context = new ChinookContext())
+				{
+					for (int j = 0; j < 100; j++)
+					{
+						Album newAlbum = context.Albums.Create();
+						newAlbum.ArtistId = 1;
+						newAlbum.Title = "Inserted Album " + j.ToString();
+						albums.Add(newAlbum);
 
-				MediaType newType = _context.MediaTypes.Create();
-				newType.Name = "Inserted Media Type";
-				mediaTypes.Add(newType); 
-			};
+						Genre newGenre = context.Genres.Create();
+						newGenre.Name = "Inserted Genre " + j.ToString();
+						genres.Add(newGenre);
+
+						MediaType newType = context.MediaTypes.Create();
+						newType.Name = "Inserted Media Type";
+						mediaTypes.Add(newType);
+					};
 
 
-			List<Track> tracks = new List<Track>();
-			for (int i = 0; i < count; i++)
-			{
-				Track newTrack = _context.Tracks.Create();
-				newTrack.Album = albums[i];
-				newTrack.Bytes = 123;
-				newTrack.Composer = "Inseted Composer";
-				newTrack.Genre = genres[i];
-				newTrack.MediaType = mediaTypes[i];
-				newTrack.Milliseconds = 123;
-				newTrack.Name = "Inseted Track " + i.ToString();
-				newTrack.UnitPrice = 99;
+					List<Track> tracks = new List<Track>();
+					for (int j = 0; j < 100; j++)
+					{
+						Track newTrack = context.Tracks.Create();
+						newTrack.Album = albums[j];
+						newTrack.Bytes = 123;
+						newTrack.Composer = "Inseted Composer";
+						newTrack.Genre = genres[j];
+						newTrack.MediaType = mediaTypes[j];
+						newTrack.Milliseconds = 123;
+						newTrack.Name = "Inseted Track " + j.ToString();
+						newTrack.UnitPrice = 99;
 
-				tracks.Add(newTrack);
+						tracks.Add(newTrack);
+					}
+
+					measurement.Start();
+					context.Tracks.AddRange(tracks);
+					context.SaveChanges();
+					measurement.Stop();
+					results.Add(new MeasurementViewModel() { memory = measurement.memory, milliseconds = measurement.milliseconds });
+				}
 			}
 
-			if (count == 1)
-			{
-				mm.Start();
-				_context.Tracks.Add(tracks[0]);
-			}
-			else
-			{
-				mm.Start();
-				_context.Tracks.AddRange(tracks);
-			}
-			_context.SaveChanges();
-			mm.Stop();
-
-			ViewBag.time = mm.milliseconds;
-			ViewBag.memory = mm.memory;
-			return View("POSTResult");
+			return View("MeasurementResults", results);
 		}
     }
 }

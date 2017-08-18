@@ -26,7 +26,7 @@ namespace Infrastructure
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
 			GC.Collect();
-			_startMemory = GC.GetTotalMemory(true);//Process.GetCurrentProcess().VirtualMemorySize64;
+			_startMemory = GC.GetTotalMemory(true);
 			_watch.Reset();
 			_watch.Start();
 		}
@@ -35,7 +35,7 @@ namespace Infrastructure
 		{
 			_watch.Stop();
 			milliseconds = _watch.Elapsed.TotalMilliseconds;
-			memory = GC.GetTotalMemory(false) - _startMemory; //Process.GetCurrentProcess().VirtualMemorySize64;// - _startMemory;			
+			memory = GC.GetTotalMemory(false) - _startMemory;
 		}
 	}	
 }

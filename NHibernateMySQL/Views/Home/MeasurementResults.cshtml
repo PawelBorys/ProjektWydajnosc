@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Infrastructure.ViewModels.MeasurementViewModel>
+
+@{
+    ViewBag.Title = "Measurement Results";
+}
+
+<h2>MeasurementResults</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.milliseconds)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.memory)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.milliseconds)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.memory)
+        </td>
+    </tr>
+}
+
+</table>
